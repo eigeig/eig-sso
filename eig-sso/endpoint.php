@@ -7,7 +7,7 @@ include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 
 /* if the plugin isn't active let them log in normally */
 if ( ! is_plugin_active( 'eig-sso/eig-sso.php' ) ) {
-    wp_safe_redirect( login_url() );
+    wp_safe_redirect( wp_login_url() );
     exit;
 }
 
@@ -24,7 +24,7 @@ if ( eigsso_check_offer( $nonce, $salt ) ) {
 
 /* if the mysql user doesn't have privileges eigsso_accept_offer will not
    redirect and drop into this case. */
-wp_safe_redirect( login_url() );
+wp_safe_redirect( wp_login_url() );
 exit;
 
 /*
