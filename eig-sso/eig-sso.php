@@ -14,6 +14,7 @@ function eigsso_activate() {
 
     $q = "CREATE TABLE $table (
       offer VARCHAR(255) DEFAULT '' NOT NULL,
+      expires int(11) DEFAULT 0 NOT NULL,
       UNIQUE KEY offer (offer)
     );";
 
@@ -29,24 +30,36 @@ register_deactivation_hook( __FILE__, 'eigsso_deactivate' );
 
 function eigsso_check_offer($nonce, $salt) {
     if ( empty( $nonce ) || empty( $salt ) ) {
+        eigsso_set_failed_attempts( eigsso_get_failed_attempts() + 1 );
+        return false;
+    }
+
+    if ( eigsso_locked_out() ) {
         return false;
     }
 
     global $wpdb;
 
     $hash = base64_encode( hash( 'sha256', $nonce . $salt, true ) );
+    $now  = time();
+    $expiration = $now + 20;
 
     $table = $wpdb->prefix . 'eig_sso';
 
     /* wp doesn't support SELECT 1, but 1=1 is an alias to TRUE */
     $res = $wpdb->get_var(
-        $wpdb->prepare( "SELECT 1=1 FROM $table WHERE offer = %s", $hash )
+        $wpdb->prepare(
+            "SELECT 1=1 FROM $table
+                WHERE offer = %s AND expires >= %s AND expires < %s",
+            $hash, $now, $expiration
+        )
     );
 
     if ( null !== $res ) {
         return true;
     }
 
+    eigsso_set_failed_attempts( eigsso_get_failed_attempts() + 1 );
     return false;
 }
 
@@ -106,6 +119,36 @@ function eigsso_uninstall() {
     $wpdb->query( "DROP TABLE $table" );
 }
 register_uninstall_hook( __FILE__, 'eigsso_uninstall' );
+
+function eigsso_user_identifier($prefix) {
+    if ( null === $prefix ) {
+        $prefix = '';
+    }
+
+    return 'eigsso_' . $prefix . '_' . $_SERVER['REMOTE_ADDR'];
+}
+
+function eigsso_get_failed_attempts() {
+    $id = eigsso_user_identifier( 'failed_attempts' );
+
+    $attempts_n = get_transient( $id, 0 );
+
+    return $attempts_n;
+}
+
+function eigsso_set_failed_attempts($attempts_n) {
+    if ( ! is_int($attempts_n) ) {
+        return false;
+    }
+
+    $id = eigsso_user_identifier( 'failed_attempts' );
+
+    return set_transient( $id, $attempts_n, 60 * 60 * 3 );
+}
+
+function eigsso_locked_out() {
+    return 5 <= eigsso_get_failed_attempts();
+}
 
 /*
 eig-sso.php - Defines SSO offer functionality and hooks into WordPress events.
