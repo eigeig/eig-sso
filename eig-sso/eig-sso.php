@@ -7,6 +7,7 @@ Author: Endurance International Group
 Author URI: http://endurance.com/
 License: GPL2
 */
+
 function eigsso_activate() {
     global $wpdb;
 
@@ -27,6 +28,25 @@ function eigsso_deactivate() {
     eigsso_clear_offers();
 }
 register_deactivation_hook( __FILE__, 'eigsso_deactivate' );
+
+function eigsso_detect_trigger() {
+    if ( ! isset( $_GET['eigsso_nonce'] ) || ! isset( $_GET['eigsso_salt'] ) ) {
+        return;
+    }
+
+    $nonce = $_GET['eigsso_nonce'];
+    $salt = $_GET['eigsso_salt'];
+
+    if ( eigsso_check_offer( $nonce, $salt ) ) {
+        eigsso_accept_offer();
+    }
+
+    /* if the mysql user doesn't have privileges eigsso_accept_offer will not
+       redirect and drop into this case. */
+    wp_safe_redirect( wp_login_url() );
+    exit;
+}
+add_action( 'init', 'eigsso_detect_trigger' );
 
 function eigsso_check_offer($nonce, $salt) {
     if ( empty( $nonce ) || empty( $salt ) ) {
