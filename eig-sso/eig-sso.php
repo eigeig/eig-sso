@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: EIG-SSO
-Version: 1.0
+Version: 0.9
 Description: Securely log in to WordPress from Control Panel without needing a username and password.
 Author: Endurance International Group
 Author URI: http://endurance.com/

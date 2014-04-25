@@ -10,4 +10,4 @@ This plugin will confgure itself automatically when installed, and free up used
 resources when uninstalled. No configuration is necessary.
 
 ## Support and Troubleshooting ##
-This plugin supports single-site installations of WordPress, up to version 3.8.1.
+This plugin supports single-site installations of WordPress, up to version 3.9.
