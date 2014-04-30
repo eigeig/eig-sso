@@ -7,7 +7,7 @@ Stable tag: 1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Allows customers of Endurance International brands to sign on to WordPress through Control Panel.
+Allows customers of Endurance International Group to sign on to WordPress through the vDeck Control Panel.
 
 == Description ==
 
@@ -24,7 +24,7 @@ When installed and activated, this plugin will detect single sign on (SSO) attem
 
 = How do I configure single sign-on (SSO)? =
 
-This plugin creates and drops its database table on install and uninstall, respectively. As it relies on data created by Control Panel, no user configuration is necessary. If you wish to disable SSO functionality, you may deactivate the plugin. Standard sign on with username and password will still be available regardless of the state of the plugin.
+This plugin creates and drops its database table on install and uninstall, respectively. As it relies on data created by the vDeck Control Panel, no user configuration is necessary. If you wish to disable SSO functionality, you may deactivate the plugin. Standard sign on with username and password will still be available regardless of the state of the plugin.
 
 = Who can use this plugin? =
 
@@ -32,7 +32,7 @@ Customers of the WP Starter and WP Essential plans can use this plugin to sign i
 
 = How does this work? =
 
-When a user signs into Control Panel and requests to sign into WordPress, a nonce (number used once) and salt are generated and saved in the WordPress database as a secure hash. The user is redirected to their WordPress site with the nonce and salt. After the plugin verifies the credentials, the user is signed in.
+When a user signs into the vDeck Control Panel and requests to sign into WordPress, a nonce (number used once) and salt are generated and saved in the WordPress database as a secure hash. The user is redirected to their WordPress site with the nonce and salt. After the plugin verifies the credentials, the user is signed in.
 
 = I'm having problems signing in. =
 
