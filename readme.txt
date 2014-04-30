@@ -42,8 +42,9 @@ As an additional security measure, the plugin will refuse to authenticate users 
 
 == Screenshots ==
 
-http://i.imgur.com/lrFkTRG.png
-http://i.imgur.com/7zgZXO2.png
+1. To log in to your WordPress installation, find the Launch WordPress button...
+
+2. ...and you'll be logged in without needing another username and password.
 
 == Changelog ==
 
