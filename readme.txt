@@ -3,7 +3,7 @@ Contributors: bcorey, eig
 Tags: sso, single sign-on
 Requires at least: 3.3
 Tested up to: 3.9
-Stable tag: 1.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -47,6 +47,8 @@ As an additional security measure, the plugin will refuse to authenticate users 
 2. ...and you'll be logged in without needing another username and password.
 
 == Changelog ==
+
+1.0.1 - Fix uninstall bug.
 
 1.0 - Initial release.
 

@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: EIG-SSO
-Version: 1.0
+Version: 1.0.1
 Description: Securely log in to WordPress from Control Panel without needing a username and password.
 Author: Endurance International Group
 Author URI: http://endurance.com/
@@ -128,10 +128,6 @@ function eigsso_clear_offers() {
 }
 
 function eigsso_uninstall() {
-    if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
-        exit;
-    }
-
     global $wpdb;
 
     $table = $wpdb->prefix . 'eig_sso';
