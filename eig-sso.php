@@ -61,8 +61,6 @@ function eigsso_check_offer($nonce, $salt) {
     global $wpdb;
 
     $hash = base64_encode( hash( 'sha256', $nonce . $salt, true ) );
-    $now  = time();
-    $expiration = $now + 20;
 
     $table = $wpdb->prefix . 'eig_sso';
 
@@ -70,8 +68,8 @@ function eigsso_check_offer($nonce, $salt) {
     $res = $wpdb->get_var(
         $wpdb->prepare(
             "SELECT 1=1 FROM $table
-                WHERE offer = %s AND expires >= %s AND expires < %s",
-            $hash, $now, $expiration
+                WHERE offer = %s AND expires >= UNIX_TIMESTAMP()",
+            $hash
         )
     );
 
@@ -117,14 +115,9 @@ function eigsso_clear_offers() {
     global $wpdb;
 
     $table = $wpdb->prefix . 'eig_sso';
-    $res = $wpdb->query( "TRUNCATE TABLE $table" );
+    $res = $wpdb->query( "DELETE FROM $table WHERE expires < UNIX_TIMESTAMP()" );
 
-    /* if the user doesn't have truncate privileges */
-    if ( true !== $res ) {
-        $res = $wpdb->query( "DELETE FROM $table WHERE 1" );
-    }
-
-    return $res;
+    return false !== $res;
 }
 
 function eigsso_uninstall() {
